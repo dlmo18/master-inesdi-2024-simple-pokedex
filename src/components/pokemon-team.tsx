@@ -15,7 +15,7 @@ export function PokemonTeam({pokemon}: Props) {
     const [pokemons, setPokemon] = useState([]);
     
     const teamCache = localStorage.getItem('pokemon_team') ? JSON.parse( localStorage.getItem('pokemon_team') ) : [null,null,null,null,null]
-    console.log('teamCache',teamCache)
+    //console.log('teamCache',teamCache)
     //console.log('pokemon',pokemon?.name) 
     const [team, setTeam] = useState(teamCache);
 
