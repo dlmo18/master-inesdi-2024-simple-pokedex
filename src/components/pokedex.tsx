@@ -5,6 +5,8 @@ import { useState } from "react";
 import { randomMode } from "utils/random";
 import { Button } from "./button";
 import { LedDisplay } from "./led-display";
+import { PokemonInfo } from "./pokemon-info";
+import { PokemonTeam } from "./pokemon-team";
 
 import "./pokedex.css";
 
@@ -61,6 +63,7 @@ export function Pokedex() {
             {selectedPokemon?.name}
           </div>
         </div>
+        <PokemonInfo pokemon={selectedPokemon} />
       </div>
       <div className="panel right-panel">
         <div className="controls leds">
@@ -86,6 +89,7 @@ export function Pokedex() {
           <Button label="prev" onClick={prev} />
           <Button label="next" onClick={next} />
         </div>
+        <PokemonTeam pokemon={selectedPokemon} />
       </div>
     </div>
   );

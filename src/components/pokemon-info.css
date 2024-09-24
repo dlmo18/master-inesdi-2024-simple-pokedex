@@ -1,0 +1,37 @@
+.pokemon-type {
+    width: 100%;
+    border-radius: 1rem;
+    border: 3px solid #000;
+    background: #fff;
+    text-align: center;
+    padding: 1rem;
+    margin-top: 1rem;
+}
+
+.pokemon-type .type {
+    margin-bottom: .5rem;
+}
+
+.pokemon-type .type-content {
+    padding-top: .5rem;
+}
+  
+.pokemon-type .weakness {
+    border-top: 1px dotted #000;
+    padding-top: .5rem;
+}
+
+.pokemon-type .weakness-content {
+    padding-top: .5rem;
+    padding-bottom: .5rem;
+}
+
+.pokemon-type img {
+    width: 100px;
+    height: auto;
+    margin: 0 .25rem;
+}
+.pokemon-type .cry {
+    border-top: 1px dotted #000;
+    padding-top: .5rem;
+}
