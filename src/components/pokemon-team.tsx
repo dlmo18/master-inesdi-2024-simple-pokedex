@@ -13,16 +13,14 @@ export function PokemonTeam({pokemon}: Props) {
     const { pokemonList } = usePokemonList();
     
     const [pokemons, setPokemon] = useState([]);
-    const [selected, setSelected] = useState(pokemon);
     
     const teamCache = localStorage.getItem('pokemon_team') ? JSON.parse( localStorage.getItem('pokemon_team') ) : [null,null,null,null,null]
-    //console.log('teamCache',teamCache)
+    console.log('teamCache',teamCache)
     //console.log('pokemon',pokemon?.name) 
     const [team, setTeam] = useState(teamCache);
 
     const joinTeam = (key) => {
-        console.log('pokemon',selected?.name, pokemon?.name) 
-        if(selected==undefined) {
+        if(pokemon==undefined) {
             return;
         }
         
@@ -36,8 +34,8 @@ export function PokemonTeam({pokemon}: Props) {
         let pokemonTmp = pokemons;
         pokemonTmp[key]=<button key={"pokemon-"+key} className="team-pk" onClick={() => joinTeam(key)}>
                     <img
-                        src={selected?.sprites?.front_default}
-                        alt={selected?.name}
+                        src={pokemon?.sprites?.front_default}
+                        alt={pokemon?.name}
                     />
                 </button>
         setPokemon(pokemonTmp);
@@ -86,7 +84,7 @@ export function PokemonTeam({pokemon}: Props) {
                 });
         })
         
-    }, [pokemonList]);
+    }, [pokemonList,pokemon]);
     
                 
     return (
