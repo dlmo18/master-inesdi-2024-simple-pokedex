@@ -14,77 +14,62 @@ export function PokemonTeam({pokemon}: Props) {
     
     const [pokemons, setPokemon] = useState([]);
     
-    const teamCache = localStorage.getItem('pokemon_team') ? JSON.parse( localStorage.getItem('pokemon_team') ) : [null,null,null,null,null]
+    const teamEmpty = [null,null,null,null,null,null]
+    const teamCache = localStorage.getItem('pokemon_team') ? JSON.parse( localStorage.getItem('pokemon_team') ) : teamEmpty
     //console.log('teamCache',teamCache)
     //console.log('pokemon',pokemon?.name) 
     const [team, setTeam] = useState(teamCache);
-
+    const [count, setCount] = useState(0);
+   
     const joinTeam = (key) => {
+        setCount(teamCache)    
+
         if(pokemon==undefined) {
             return;
         }
-        
+
         let tempTeam = team ;
-        tempTeam[ key ] = pokemon.id-1;    
+        tempTeam[ key ] = pokemon.id-1;   
         
-        setTeam(tempTeam)
         localStorage.setItem('pokemon_team', JSON.stringify(tempTeam) );
-        //console.log('tempTeam',pokemon, JSON.stringify(tempTeam)) 
-                
+        
+               
         let pokemonTmp = pokemons;
-        pokemonTmp[key]=<button key={"pokemon-"+key} className="team-pk" onClick={() => joinTeam(key)}>
-                    <img
-                        src={pokemon?.sprites?.front_default}
-                        alt={pokemon?.name}
-                    />
-                </button>
+        pokemonTmp[key]=pokemon
+        
+        setTeam(tempTeam)        
         setPokemon(pokemonTmp);
-        
+
+        console.log('pokemon', pokemon.name)
     };
 
-    const teamEmpty = () => {
-        const pokemonTmp = []
-        for(let i=0; i<6; i++) {
-            pokemonTmp.push(<button key={"pokemon-"+i} onClick={() => joinTeam(i)} className="team-empty" title="Disponible"></button>)
-        }
-        return pokemonTmp;
-    };
-        
     useEffect(() => {
-
-        let pokemonTmp = teamEmpty();
-        setPokemon(pokemonTmp); 
-
+       
+        let pokemonTmp = pokemons;
         team.forEach((pk,pkey) => {
-
-            if(pk==null) {
-                return;
-            }
-
             const objPk = pokemonList[pk];
-            if(!objPk) {
+
+            if(pk==null || !objPk) {
+                pokemonTmp[pkey]=null
+                setPokemon(pokemonTmp); 
                 return;
             }
-            
-            fetch(objPk.url)
-                .then((res) => {
-                    return res.json();
-                })
-                .then((data) => {  
-                    
-                    pokemonTmp[pkey]=<button key={"pokemon-"+pkey} className="team-pk" onClick={() => joinTeam(pkey)}>
-                        <img
-                            src={data?.sprites?.front_default}
-                            alt={data?.name}
-                        />
-                    </button>
+            else {
+                fetch(objPk.url)
+                    .then((res) => {
+                        return res.json();
+                    })
+                    .then((data) => {  
+                        
+                        pokemonTmp[pkey]=data
+    
+                        setPokemon(pokemonTmp); 
+                        //console.log('pokemonTmp',pokemonTmp); 
+                    });
 
-                    setPokemon(pokemonTmp); 
-                    //console.log('pokemonTmp',pokemonTmp); 
-                });
-        })
-        
-    }, [pokemonList,pokemon]);
+            }
+        })        
+    });
     
                 
     return (
@@ -94,7 +79,20 @@ export function PokemonTeam({pokemon}: Props) {
                 <small>Click en la casilla para asignar el pokemón a tu equipo</small>
             </div>
             <div className="team">
-                {pokemons}
+                { pokemons && pokemons.map((info,pkey)=> (
+                        info
+                    ?
+                        <button key={"pokemon-"+pkey} className="team-pk" onClick={() => joinTeam(pkey)}>
+                            <img
+                                src={info?.sprites?.front_default}                                
+                                alt={"#"+info?.id +" / "+ info?.name}
+                                title={"#"+info?.id +" / "+ info?.name}
+                            />
+                        </button>
+                    :
+                        <button key={"pokemon-"+pkey} onClick={() => joinTeam(pkey)} className="team-empty" title="Disponible"></button>
+
+                ) )}
             </div>
         </div>
     );

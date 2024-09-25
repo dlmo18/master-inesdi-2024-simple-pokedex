@@ -76,11 +76,26 @@ export function PokemonInfo({ pokemon }: Props) {
                 setPkWeak(weakTmp);
                 
                 //const pkWeakLs = weakTmp.filter(w => (strengthTmp.indexOf(w.name)==-1) );
+                
+                let noRepeat = [];
                 const pkWeakLs = weakTmp.filter(
-                  (w, k, array) =>
-                    strengthTmp.indexOf(w.name) == -1 ||
-                    array.indexOf(w.name) == -1
+                  (w, k, array) => {
+                    
+                    if( strengthTmp.indexOf(w.name) >= 0 ) {
+                      return false;
+                    } 
+
+                    if(noRepeat.indexOf(w.name) == -1) {
+                      noRepeat.push(w.name); 
+                    }
+                    else {
+                      return false;
+                    }                                 
+
+                    return true;
+                  }
                 );
+
                 setPkWeakness(pkWeakLs)
               }
   
